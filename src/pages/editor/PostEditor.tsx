@@ -19,6 +19,7 @@ import TipTapEditor from '../../components/TipTapEditor'
 import StarRating from '../../components/StarRating'
 import { slugify, toDatetimeLocal } from '../../lib/utils'
 import { supabase } from '../../lib/supabase'
+import { useToast } from '../../hooks/useToast'
 import type { PostCategory, PostGenre } from '../../lib/database.types'
 
 /**
@@ -84,7 +85,7 @@ export default function PostEditor() {
   const [richContent, setRichContent] = useState('')
   const [seoExpanded, setSeoExpanded] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
-  const [saveSuccess, setSaveSuccess] = useState(false)
+  const { addToast } = useToast()
 
   const { data: existingPost, isLoading: loadingPost } = usePostById(id || '')
   const createPost = useCreatePost()
@@ -124,13 +125,11 @@ export default function PostEditor() {
   })
 
   const watchCategory = watch('category')
-  const watchTitle = watch('title')
   const watchSlug = watch('slug')
 
   // Auto-generate slug from title
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const title = e.target.value
-    setValue('title', title)
     const currentSlug = watchSlug
     const generatedSlug = slugify(title)
     // Only auto-update slug if it hasn't been manually edited
@@ -172,8 +171,6 @@ export default function PostEditor() {
    * Creates a new post or updates an existing one based on isEditing.
    */
   const onSubmit = async (data: EditorFormData) => {
-    setSaveSuccess(false)
-
     try {
       const postData = {
         title: data.title,
@@ -199,19 +196,23 @@ export default function PostEditor() {
 
       if (isEditing && id) {
         await updatePost.mutateAsync({ id, updates: postData })
+        addToast('Post saved successfully', 'success')
       } else {
         const result = await createPost.mutateAsync(postData)
+        addToast('Post created successfully', 'success')
         // Navigate to edit the newly created post
         if (result) {
           navigate(`/editor/edit/${result.id}`, { replace: true })
           return
         }
       }
-
-      setSaveSuccess(true)
-      setTimeout(() => setSaveSuccess(false), 3000)
     } catch (error) {
       console.error('Failed to save post:', error)
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Failed to save post. Check your connection and permissions.'
+      addToast(message, 'error', 8000)
     }
   }
 
@@ -276,9 +277,6 @@ export default function PostEditor() {
           </div>
 
           <div className="flex items-center gap-2">
-            {saveSuccess && (
-              <span className="text-sm text-emerald-400">Saved!</span>
-            )}
             <button
               onClick={handleSubmit(onSubmit)}
               disabled={isSubmitting}
@@ -302,9 +300,10 @@ export default function PostEditor() {
           <div>
             <input
               type="text"
-              value={watchTitle}
-              onChange={handleTitleChange}
               placeholder="Post Title"
+              {...register('title', {
+                onChange: handleTitleChange,
+              })}
               className="w-full border-0 bg-transparent font-heading text-3xl tracking-wide text-white placeholder-surface-600 outline-none sm:text-4xl lg:text-5xl"
             />
             {errors.title && (

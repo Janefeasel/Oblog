@@ -1,33 +1,15 @@
 -- ============================================================
--- TEMPLATE — Cron Job: Automatic News Aggregation
---
--- Copy this template, fill in your values, then run in Supabase
--- SQL Editor. The actual file (cron-setup.sql) is gitignored
--- because it contains your service_role key.
+-- TEMPLATE — Cron Job: Automatic News Aggregation (Edge Function)
 --
 -- This sets up a daily cron job that triggers the aggregate-news
--- Edge Function, which fetches trending movies from TMDB and
--- inserts them as published posts. The RSS feed at /rss.xml
--- automatically picks these up.
---
--- ⚠️ Prerequisites (run these in your terminal first):
+-- Edge Function. Before running this SQL, deploy the function:
 --   1. npx supabase login
---   2. npx supabase functions deploy aggregate-news --no-verify-jwt
---   3. npx supabase secrets set TMDB_API_KEY=your-tmdb-key
---   4. npx supabase secrets set SUPABASE_URL=https://your-project.supabase.co
---   5. npx supabase secrets set SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+--   2. npx supabase link --project-ref YOUR_PROJECT_REF
+--   3. npx supabase functions deploy aggregate-news --no-verify-jwt
+--   4. npx supabase secrets set TMDB_API_KEY=... SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=...
 --
--- How to use this template:
---   1. Copy this file to cron-setup.sql
---   2. Replace <YOUR_PROJECT_REF> and <your_service_role_key>
---   3. Run in Supabase Dashboard > SQL Editor
---
--- Where to find these values:
---   Project Settings > API > Project URL  → https://<PROJECT_REF>.supabase.co
---   Project Settings > API > service_role key
---
--- To view scheduled jobs:  SELECT * FROM cron.job;
--- To remove the job:       SELECT cron.unschedule('aggregate-news-daily');
+-- Alternatively, use .github/workflows/daily-tmdb-seed.yml (recommended)
+-- which runs the seed script via GitHub Actions without deploying a function.
 -- ============================================================
 
 -- Enable required extensions (safe to run multiple times)

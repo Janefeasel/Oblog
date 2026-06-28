@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HelmetProvider } from 'react-helmet-async'
 import { AuthProvider } from './hooks/useAuth'
+import { ToastProvider } from './hooks/useToast'
+import ToastContainer from './components/Toast'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
 import HomePage from './pages/HomePage'
@@ -36,7 +38,9 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AuthProvider>
-            <Routes>
+            <ToastProvider>
+              <ToastContainer />
+              <Routes>
               {/* Public Routes */}
               <Route element={<Layout />}>
                 <Route path="/" element={<HomePage />} />
@@ -58,6 +62,7 @@ export default function App() {
                 <Route path="edit/:id" element={<PostEditor />} />
               </Route>
             </Routes>
+            </ToastProvider>
           </AuthProvider>
         </BrowserRouter>
       </QueryClientProvider>
