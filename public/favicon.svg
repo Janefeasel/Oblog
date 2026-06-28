@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0a0a0a"/>
+  <!-- Clapperboard body -->
+  <rect x="10" y="20" width="44" height="30" rx="3" fill="url(#g)" opacity="0.9"/>
+  <!-- Top stick -->
+  <rect x="8" y="16" width="48" height="7" rx="2" fill="url(#g)"/>
+  <!-- Hinge stripes -->
+  <rect x="12" y="16" width="8" height="7" fill="#0a0a0a"/>
+  <rect x="32" y="16" width="8" height="7" fill="#0a0a0a"/>
+  <!-- Clap lines -->
+  <line x1="16" y1="28" x2="48" y2="28" stroke="#0a0a0a" stroke-width="1.5" opacity="0.6"/>
+  <line x1="16" y1="34" x2="48" y2="34" stroke="#0a0a0a" stroke-width="1.5" opacity="0.6"/>
+  <line x1="16" y1="40" x2="35" y2="40" stroke="#0a0a0a" stroke-width="1.5" opacity="0.6"/>
+  <!-- Film reel circle -->
+  <circle cx="48" cy="44" r="5" fill="none" stroke="#0a0a0a" stroke-width="1.2" opacity="0.7"/>
+  <circle cx="48" cy="44" r="1.5" fill="#0a0a0a" opacity="0.5"/>
+  <!-- Play triangle -->
+  <polygon points="46.5,43 46.5,45 48.5,44" fill="#0a0a0a" opacity="0.5"/>
+</svg>
